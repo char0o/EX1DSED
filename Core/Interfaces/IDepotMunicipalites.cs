@@ -10,7 +10,7 @@ namespace Core.Interfaces
         IEnumerable<Municipalite> ListerMunicipalitiesActives();
         void DesactiverMunicipalite(int code);
         void AjouterMunicipalite(Municipalite municipalite);
-        void ModifierMunicipalite(Municipalite municipalite);
+        void ActiverMunicipalite(int code);
         IEnumerable<Municipalite> ListerMunicipalities();
     }
 }

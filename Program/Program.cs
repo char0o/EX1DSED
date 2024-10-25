@@ -19,20 +19,24 @@ namespace DSED_M01_Fichiers_Texte
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(
-                    "Server=.;Database=BD_Municipalite;TrustServerCertificate=True;Integrated Security=True;MultipleActiveResultSets=True");
+                    "Server=.;Database=BD_Municipalite;TrustServerCertificate=True;Integrated Security=True;");
             });
 
             services.AddScoped<IDepotMunicipalites, DepotMunicipalite>();
-            services.AddScoped<IImportCSV, ImportCSV>();
-            services.AddScoped<StatistiquesImportation>();
+            services.AddScoped<IDepotCSV, DepotCSV>();
+            services.AddSingleton<StatistiquesImportation>();
             services.AddScoped<MunicipaliteService>();
+            services.AddScoped<TraitementCSV>();
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var csvImport = serviceProvider.GetRequiredService<IImportCSV>();
-            
-            csvImport.ImporterCsv("municipalites2.csv");
-            csvImport.AjouterMunicipalites();
+            var traitementCSV = serviceProvider.GetRequiredService<TraitementCSV>();
+            var stats = serviceProvider.GetRequiredService<StatistiquesImportation>();
+
+            traitementCSV.TraiterDepotCSV();
+            Console.WriteLine(stats.ToString());
+            traitementCSV.TraiterDepotCSV();
+            Console.WriteLine(stats.ToString());
         }
     }
 }

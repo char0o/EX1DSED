@@ -40,9 +40,15 @@ namespace Data.Repos
             appDbContext.SaveChanges();
         }
 
-        public void ModifierMunicipalite(Municipalite municipalite)
+        public void ActiverMunicipalite(int code)
         {
+            Municipalite? municipalite = ChercherMunicipaliteParCode(code);
 
+            if (municipalite != null)
+            {
+                municipalite.Actif = true;
+                appDbContext.SaveChanges();
+            }
         }
 
         public IEnumerable<Municipalite> ListerMunicipalities()
