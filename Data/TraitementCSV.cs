@@ -7,19 +7,21 @@ namespace Data
     public class TraitementCSV
     {
         private readonly IDepotMunicipalites depotMunicipalites;
-        private readonly IDepotCSV depotCSV;
+        private readonly IDepotImportationMunicipalites depotImportation;
         private readonly StatistiquesImportation stats;
 
-        public TraitementCSV(IDepotMunicipalites depotMunicipalites, StatistiquesImportation stats, IDepotCSV depotCSV)
+        public TraitementCSV(IDepotMunicipalites depotMunicipalites, 
+            StatistiquesImportation stats, 
+            IDepotImportationMunicipalites depotImportation)
         {
             this.depotMunicipalites = depotMunicipalites;
-            this.depotCSV = depotCSV;
+            this.depotImportation = depotImportation;
             this.stats = stats;
         }
 
         public void TraiterDepotCSV()
         {
-            IEnumerable<Municipalite> municipalitesImportees = depotCSV.ImporterCSV("municipalites.csv");
+            IEnumerable<Municipalite> municipalitesImportees = depotImportation.ImporterMunicipalites();
             HashSet<int> codesExistants = new HashSet<int>(
                 depotMunicipalites.ListerMunicipalities()
                     .Select(m => m.Code)

@@ -23,8 +23,13 @@ namespace DSED_M01_Fichiers_Texte
             });
 
             services.AddScoped<IDepotMunicipalites, DepotMunicipalite>();
-            services.AddScoped<IDepotCSV, DepotCSV>();
-            services.AddSingleton<StatistiquesImportation>();
+            services.AddScoped<StatistiquesImportation>();
+            services.AddScoped<IDepotImportationMunicipalites, DepotCSV>(provider =>
+            {
+                StatistiquesImportation stats = provider.GetRequiredService<StatistiquesImportation>();
+                return new DepotCSV(stats, "municipalites.csv");
+            });
+            
             services.AddScoped<MunicipaliteService>();
             services.AddScoped<TraitementCSV>();
 
@@ -33,8 +38,6 @@ namespace DSED_M01_Fichiers_Texte
             var traitementCSV = serviceProvider.GetRequiredService<TraitementCSV>();
             var stats = serviceProvider.GetRequiredService<StatistiquesImportation>();
 
-            traitementCSV.TraiterDepotCSV();
-            Console.WriteLine(stats.ToString());
             traitementCSV.TraiterDepotCSV();
             Console.WriteLine(stats.ToString());
         }

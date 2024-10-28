@@ -1,9 +1,9 @@
-﻿using Core.DTOs;
+﻿using Core.Entities;
 
 namespace Core.Interfaces
 {
     public interface IDepotImportationMunicipalites
     {
-        IEnumerable<MunicipaliteDTO> ImporterMunicipalites();
+        IEnumerable<Municipalite> ImporterMunicipalites();
     }
 }
