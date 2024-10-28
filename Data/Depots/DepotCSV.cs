@@ -5,7 +5,6 @@ namespace Data.Repos;
 
 public class DepotCSV : IDepotImportationMunicipalites
 {
-    private readonly StatistiquesImportation statistiquesImportation;
     private string csvFilePath = "";
     const int CODE = 0;
     const int NOM = 1;
@@ -13,9 +12,8 @@ public class DepotCSV : IDepotImportationMunicipalites
     const int SITEWEB = 9;
     const int DATEELECTION = 23;
 
-    public DepotCSV(StatistiquesImportation statistiquesImportation, string csvFilePath)
+    public DepotCSV(string csvFilePath)
     {
-        this.statistiquesImportation = statistiquesImportation;
         this.csvFilePath = csvFilePath;
     }
 
@@ -29,7 +27,6 @@ public class DepotCSV : IDepotImportationMunicipalites
 
         foreach (var ligne in lignes)
         {
-            statistiquesImportation.NombreMunicipalitesImportees++;
             string[] champs = ligne.Split("\",\"");
             int code = int.Parse(champs[CODE].Substring(1));
 

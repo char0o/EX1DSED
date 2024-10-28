@@ -24,19 +24,17 @@ namespace DSED_M01_Fichiers_Texte
             
             string? connectionString = config.GetConnectionString("BDMunicipalite");
             string? csvFilePath = config.GetSection("DepotSettings")["CSVFilePath"];
+            string? jsonPath = config.GetSection("DepotSettings")["JSONPath"];
             
             services.AddSingleton<IConfiguration>(config);
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IDepotImportationMunicipalites, DepotCSV>(provider => new DepotCSV(csvFilePath));
+            //services.AddScoped<IDepotImportationMunicipalites, DepotJSON>(provider => new DepotJSON(jsonPath));
             services.AddScoped<IDepotMunicipalites, DepotMunicipalite>();
-            services.AddSingleton<StatistiquesImportation>();
-            services.AddScoped<MunicipaliteService>();
-            services.AddScoped<TraitementCSV>();
             
-            services.AddScoped<IDepotImportationMunicipalites, DepotCSV>(provider =>
-            {
-                StatistiquesImportation stats = provider.GetRequiredService<StatistiquesImportation>();
-                return new DepotCSV(stats, csvFilePath);
-            });
+            services.AddSingleton<StatistiquesImportation>();
+            services.AddScoped<TraitementCSV>();
+
             
             ServiceProvider serviceProvider = services.BuildServiceProvider();
             
