@@ -1,6 +1,6 @@
-﻿using Core.DTOs;
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Interfaces;
+using DalMunicipaliteSQL.DTOs;
 
 namespace Services;
 
@@ -23,8 +23,7 @@ public class MunicipaliteService
             Nom = c.Nom,
             Region = c.Region,
             SiteWeb = c.SiteWeb,
-            DateElection = c.DateElection,
-            Actif = c.Actif
+            DateElection = c.DateElection
         }).ToList();
     }
 

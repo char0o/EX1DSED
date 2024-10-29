@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Core.Entities;
 
-namespace Core.DTOs
+namespace DalMunicipaliteSQL.DTOs
 {
     public class MunicipaliteDTO
     {
+        [Key]
         public int Code { get; set; }
         public string Nom { get; set; }
         public string Region { get; set; }
@@ -20,8 +21,7 @@ namespace Core.DTOs
                 Nom = Nom,
                 Region = Region,
                 SiteWeb = SiteWeb,
-                DateElection = DateElection,
-                Actif = Actif
+                DateElection = DateElection
             };
         }
     }

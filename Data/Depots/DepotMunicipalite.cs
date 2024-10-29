@@ -1,8 +1,9 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
-using Data.Db;
+using DalMunicipaliteSQL.DTOs;
+using DalMunicipaliteSQL;
 
-namespace Data.Repos
+namespace Data.Depots
 {
     public class DepotMunicipalite : IDepotMunicipalites
     {
@@ -15,34 +16,48 @@ namespace Data.Repos
 
         public Municipalite? ChercherMunicipaliteParCode(int code)
         {
-            return this.appDbContext.Municipalite.FirstOrDefault(x => x.Code == code);
+            MunicipaliteDTO? municipalite = this.appDbContext.Municipalite.FirstOrDefault(x => x.Code == code);
+            return municipalite == null ? null : municipalite.VersEntite();
         }
 
         public IEnumerable<Municipalite> ListerMunicipalitiesActives()
         {
-            return appDbContext.Municipalite.Where(c => c.Actif == true);
+            return appDbContext.Municipalite.Where(c => c.Actif == true)
+                .Select(c => c.VersEntite());
         }
 
         public void DesactiverMunicipalite(int code)
         {
-            Municipalite? municipalite = ChercherMunicipaliteParCode(code);
+            MunicipaliteDTO? municipalite = appDbContext
+                .Municipalite
+                .SingleOrDefault(x => x.Code == code);
 
             if (municipalite != null)
             {
                 municipalite.Actif = false;
-                this.appDbContext.SaveChanges();
+                appDbContext.SaveChanges();
             }
         }
 
         public void AjouterMunicipalite(Municipalite municipalite)
         {
-            appDbContext.Municipalite.Add(municipalite);
+            appDbContext.Municipalite.Add(new MunicipaliteDTO()
+            {
+                Code = municipalite.Code,
+                Nom = municipalite.Nom,
+                DateElection = municipalite.DateElection,
+                Region = municipalite.Region,
+                SiteWeb = municipalite.SiteWeb,
+                Actif = false
+            });
             appDbContext.SaveChanges();
         }
 
         public void ActiverMunicipalite(int code)
         {
-            Municipalite? municipalite = ChercherMunicipaliteParCode(code);
+            MunicipaliteDTO? municipalite = appDbContext
+                .Municipalite
+                .SingleOrDefault(x => x.Code == code);
 
             if (municipalite != null)
             {
@@ -53,7 +68,7 @@ namespace Data.Repos
 
         public IEnumerable<Municipalite> ListerMunicipalities()
         {
-            return appDbContext.Municipalite;
+            return appDbContext.Municipalite.Select(m => m.VersEntite());
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using Core.Entities;
+﻿using DalMunicipaliteSQL.DTOs;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Db
+namespace DalMunicipaliteSQL
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Municipalite> Municipalite { get; set; }
+        public DbSet<MunicipaliteDTO> Municipalite { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -13,7 +13,7 @@ namespace Data.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Municipalite>().ToTable("municipalite");
+            modelBuilder.Entity<MunicipaliteDTO>().ToTable("municipalite");
 
             base.OnModelCreating(modelBuilder);
         }

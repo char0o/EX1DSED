@@ -1,6 +1,6 @@
 ﻿using Core.Entities;
 
-namespace Data
+namespace Core.Interfaces
 {
     public interface IDepotCSV
     {

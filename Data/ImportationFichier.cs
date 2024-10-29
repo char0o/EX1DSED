@@ -1,16 +1,15 @@
-﻿using Core.DTOs;
-using Core.Entities;
+﻿using Core.Entities;
 using Core.Interfaces;
 
 namespace Data
 {
-    public class TraitementCSV
+    public class ImportationFichier
     {
         private readonly IDepotMunicipalites depotMunicipalites;
         private readonly IDepotImportationMunicipalites depotImportation;
         private readonly StatistiquesImportation stats;
 
-        public TraitementCSV(IDepotMunicipalites depotMunicipalites, 
+        public ImportationFichier(IDepotMunicipalites depotMunicipalites, 
             StatistiquesImportation stats, 
             IDepotImportationMunicipalites depotImportation)
         {
@@ -46,7 +45,7 @@ namespace Data
                 this.stats.NombreMunicipalitesDesactives++;
             }
 
-            foreach (Municipalite municipalite in depotMunicipalites.ListerMunicipalities()
+            /*foreach (Municipalite municipalite in depotMunicipalites.ListerMunicipalities()
                          .Where(m => codesImportees.Contains(m.Code)))
             {
                 if (municipalite.Actif == false)
@@ -58,7 +57,7 @@ namespace Data
                 {
                     this.stats.NombreMunicipalitesNonModifiees++;
                 }
-            }
+            }*/
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Data;
-using Data.Db;
-using Data.Repos;
-using Services;
+using Data.Depots;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.DependencyInjection;
+using DalMunicipaliteSQL;
+using DepotImportationMunicipalitesCSV;
+using DepotImportationMunicipalitesJSON;
 
-namespace DSED_M01_Fichiers_Texte
+namespace Program
 {
     internal class Program
     {
@@ -18,56 +18,29 @@ namespace DSED_M01_Fichiers_Texte
             
             IConfigurationBuilder? builder = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             
             IConfigurationRoot config = builder.Build();
             
-            string? connectionString = config.GetConnectionString("BDMunicipalite");
-            string? csvFilePath = config.GetSection("DepotSettings")["CSVFilePath"];
-            string? jsonPath = config.GetSection("DepotSettings")["JSONPath"];
+            string? connectionString = config.GetConnectionString("DBMunicipalite");
             
             services.AddSingleton<IConfiguration>(config);
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IDepotImportationMunicipalites, DepotCSV>(provider => new DepotCSV(csvFilePath));
-            //services.AddScoped<IDepotImportationMunicipalites, DepotJSON>(provider => new DepotJSON(jsonPath));
+            services.AddScoped<IDepotImportationMunicipalites, DepotImportationMunicipalitesCSV.DepotImportationMunicipalitesCSV>();
+            services.AddScoped<IDepotImportationMunicipalites, DepotImportationsMunicipalitesJSON>();
             services.AddScoped<IDepotMunicipalites, DepotMunicipalite>();
             
-            services.AddSingleton<StatistiquesImportation>();
-            services.AddScoped<TraitementCSV>();
+            services.AddScoped<StatistiquesImportation>();
+            services.AddScoped<ImportationFichier>();
 
             
             ServiceProvider serviceProvider = services.BuildServiceProvider();
             
-            {
-                TraitementCSV traitementCSV = serviceProvider.GetRequiredService<TraitementCSV>();
-                StatistiquesImportation stats = serviceProvider.GetRequiredService<StatistiquesImportation>();
-                traitementCSV.TraiterDepotCSV(); 
-                Console.WriteLine(stats.ToString());
-            }
-            Console.ReadKey();
-            {
-                TraitementCSV traitementCSV = serviceProvider.GetRequiredService<TraitementCSV>();
-                StatistiquesImportation stats = serviceProvider.GetRequiredService<StatistiquesImportation>();
-                traitementCSV.TraiterDepotCSV();
-                Console.WriteLine(stats.ToString());
-            }
-
-            using (IServiceScope scope = serviceProvider.CreateScope())
-            {
-                TraitementCSV traitementCSV = scope.ServiceProvider.GetRequiredService<TraitementCSV>();
-                StatistiquesImportation stats = scope.ServiceProvider.GetRequiredService<StatistiquesImportation>();
-                traitementCSV.TraiterDepotCSV();
-
-                Console.WriteLine(stats.ToString());
-            }
+            ImportationFichier importationFichier = serviceProvider.GetService<ImportationFichier>();
+            StatistiquesImportation stats = serviceProvider.GetService<StatistiquesImportation>();
             
-            using (IServiceScope scope = serviceProvider.CreateScope())
-            {
-                TraitementCSV traitementCSV = scope.ServiceProvider.GetRequiredService<TraitementCSV>();
-                StatistiquesImportation stats = scope.ServiceProvider.GetRequiredService<StatistiquesImportation>();
-                traitementCSV.TraiterDepotCSV();
-                Console.WriteLine(stats.ToString());
-            }
+            importationFichier.TraiterDepotCSV();
+            Console.WriteLine(stats.ToString());
         }
     }
 }

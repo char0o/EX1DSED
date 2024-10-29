@@ -1,27 +1,30 @@
-﻿using Core.Entities;
+﻿using Microsoft.Extensions.Configuration;
+using Core.Entities;
 using Core.Interfaces;
 
-namespace Data.Repos;
+namespace DepotImportationMunicipalitesCSV;
 
-public class DepotCSV : IDepotImportationMunicipalites
+public class DepotImportationMunicipalitesCSV : IDepotImportationMunicipalites
 {
-    private string csvFilePath = "";
+    private IConfiguration config;
+    
     const int CODE = 0;
     const int NOM = 1;
     const int REGION = 15;
     const int SITEWEB = 9;
     const int DATEELECTION = 23;
 
-    public DepotCSV(string csvFilePath)
+    public DepotImportationMunicipalitesCSV(IConfiguration config)
     {
-        this.csvFilePath = csvFilePath;
+        this.config = config;
     }
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
         HashSet<Municipalite> municipalitiesImportees = new HashSet<Municipalite>();
+        string chemin = config.GetSection("DepotSettings")["CSVFilePath"];
         
-        string[] lignes = System.IO.File.ReadAllLines(csvFilePath)
+        string[] lignes = System.IO.File.ReadAllLines(chemin)
             .Skip(1)
             .ToArray();
 
@@ -49,7 +52,6 @@ public class DepotCSV : IDepotImportationMunicipalites
                 SiteWeb = siteWeb,
                 DateElection = dateElection,
                 Region = champs[REGION],
-                Actif = true
             };
 
             municipalitiesImportees.Add(nouvelle);
