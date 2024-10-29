@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Srv_municipalite\Srv_municipalite.csproj" />
     <ProjectReference Include="..\DepotImportationMunicipalitesCSV\DepotImportationMunicipalitesCSV.csproj" />
     <ProjectReference Include="..\DepotImportationMunicipalitesJSON\DepotImportationMunicipalitesJSON.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />

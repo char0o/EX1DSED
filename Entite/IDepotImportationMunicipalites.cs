@@ -1,6 +1,4 @@
-﻿using Core.Entities;
-
-namespace Core.Interfaces
+﻿namespace Entite
 {
     public interface IDepotImportationMunicipalites
     {

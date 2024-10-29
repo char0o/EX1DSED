@@ -1,6 +1,5 @@
-﻿using Core.Entities;
-using Core.Interfaces;
-using DalMunicipaliteSQL.DTOs;
+﻿using Entite;
+using DalMunicipaliteSQL;
 
 namespace Services;
 

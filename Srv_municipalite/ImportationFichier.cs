@@ -1,5 +1,4 @@
-﻿using Core.Entities;
-using Core.Interfaces;
+﻿using Entite;
 
 namespace Data
 {
@@ -7,19 +6,17 @@ namespace Data
     {
         private readonly IDepotMunicipalites depotMunicipalites;
         private readonly IDepotImportationMunicipalites depotImportation;
-        private readonly StatistiquesImportation stats;
 
         public ImportationFichier(IDepotMunicipalites depotMunicipalites, 
-            StatistiquesImportation stats, 
             IDepotImportationMunicipalites depotImportation)
         {
             this.depotMunicipalites = depotMunicipalites;
             this.depotImportation = depotImportation;
-            this.stats = stats;
         }
 
-        public void TraiterDepotCSV()
+        public StatistiquesImportation TraiterDepotCSV()
         {
+            StatistiquesImportation stats = new StatistiquesImportation();
             IEnumerable<Municipalite> municipalitesImportees = depotImportation.ImporterMunicipalites();
             HashSet<int> codesExistants = new HashSet<int>(
                 depotMunicipalites.ListerMunicipalities()
@@ -42,7 +39,7 @@ namespace Data
                          .Where(m => !codesImportees.Contains(m.Code)))
             {
                 depotMunicipalites.DesactiverMunicipalite(municipalite.Code);
-                this.stats.NombreMunicipalitesDesactives++;
+                stats.NombreMunicipalitesDesactives++;
             }
 
             /*foreach (Municipalite municipalite in depotMunicipalites.ListerMunicipalities()
@@ -58,6 +55,7 @@ namespace Data
                     this.stats.NombreMunicipalitesNonModifiees++;
                 }
             }*/
+            return stats;
         }
     }
 }

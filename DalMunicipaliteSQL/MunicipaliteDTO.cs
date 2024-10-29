@@ -1,7 +1,7 @@
+﻿using Entite;
 ﻿using System.ComponentModel.DataAnnotations;
-using Core.Entities;
 
-namespace DalMunicipaliteSQL.DTOs
+namespace DalMunicipaliteSQL
 {
     public class MunicipaliteDTO
     {

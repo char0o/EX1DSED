@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Core.Entities;
-using Core.Interfaces;
+using Entite;
 
 namespace DepotImportationMunicipalitesCSV;
 
-public class DepotImportationMunicipalitesCSV : IDepotImportationMunicipalites
+public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
 {
     private IConfiguration config;
     
@@ -14,7 +13,7 @@ public class DepotImportationMunicipalitesCSV : IDepotImportationMunicipalites
     const int SITEWEB = 9;
     const int DATEELECTION = 23;
 
-    public DepotImportationMunicipalitesCSV(IConfiguration config)
+    public DepotImportationMunicipalitesCsv(IConfiguration config)
     {
         this.config = config;
     }

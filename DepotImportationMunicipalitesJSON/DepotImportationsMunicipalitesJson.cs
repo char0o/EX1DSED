@@ -1,11 +1,10 @@
 ﻿using System.Text.Json;
-using Core.Entities;
-using Core.Interfaces;
+using Entite;
 using Microsoft.Extensions.Configuration;
 
 namespace DepotImportationMunicipalitesJSON;
 
-public class DepotImportationsMunicipalitesJSON : IDepotImportationMunicipalites
+public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
 {
     private readonly IConfiguration config;
     
@@ -15,14 +14,18 @@ public class DepotImportationsMunicipalitesJSON : IDepotImportationMunicipalites
     private const string COLWEB = "mweb";
     private const string COLDATELEC = "datelec";
 
-    public DepotImportationsMunicipalitesJSON(IConfiguration config)
+    public DepotImportationsMunicipalitesJson(IConfiguration config)
     {
         this.config = config;
     }
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        string chemin = config.GetSection("DepotSettings")["JSONFilePath"];
+        string chemin = config.GetSection("DepotSettings")["JSONPath"];
+        if (!File.Exists(chemin))
+        {
+            throw new FileNotFoundException("JSON file could not be found.");
+        }
         string jsonString = File.ReadAllText(chemin);
         
         using JsonDocument jsonDoc = JsonDocument.Parse(jsonString);

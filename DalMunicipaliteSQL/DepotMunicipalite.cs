@@ -1,9 +1,6 @@
-﻿using Core.Entities;
-using Core.Interfaces;
-using DalMunicipaliteSQL.DTOs;
-using DalMunicipaliteSQL;
+﻿using Entite;
 
-namespace Data.Depots
+namespace DalMunicipaliteSQL
 {
     public class DepotMunicipalite : IDepotMunicipalites
     {

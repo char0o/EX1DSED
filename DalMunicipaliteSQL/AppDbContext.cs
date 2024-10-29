@@ -1,5 +1,4 @@
-﻿using DalMunicipaliteSQL.DTOs;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DalMunicipaliteSQL
 {
