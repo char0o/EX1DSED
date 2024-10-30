@@ -13,15 +13,15 @@ public class DependencyInjectionConfig
 {
     private static readonly Lazy<ServiceProvider> _serviceProvider = new(() =>
     {
-        var services = new ServiceCollection();
+        ServiceCollection services = new ServiceCollection();
 
-        var builder = new ConfigurationBuilder()
+        IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false, true);
 
-        var config = builder.Build();
+        IConfigurationRoot config = builder.Build();
 
-        var connectionString = config.GetConnectionString("BDMunicipalite");
+        string? connectionString = config.GetConnectionString("BDMunicipalite");
 
         services.AddSingleton<IConfiguration>(config);
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
@@ -31,17 +31,16 @@ public class DependencyInjectionConfig
 
         services.AddScoped<ImportationFichier>(provider =>
         {
-            var config = provider.GetRequiredService<IConfiguration>();
-            var fileType = config.GetSection("ImportFileType").Value;
+            string? fileType = config.GetSection("ImportFileType").Value;
             if (fileType == null) throw new ArgumentNullException("FileType not found in JSON file");
 
-            var depotMunicipalites = provider.GetRequiredService<IDepotMunicipalites>();
+            IDepotMunicipalites depotMunicipalites = provider.GetRequiredService<IDepotMunicipalites>();
 
             switch (fileType)
             {
                 case "CSV":
                 {
-                    var import =
+                    IDepotImportationMunicipalites import =
                         provider.GetRequiredService<DepotImportationMunicipalitesCsv>();
                     return new ImportationFichier(depotMunicipalites, import);
                 }

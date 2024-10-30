@@ -18,23 +18,23 @@ public class ImportationFichier
     [SuppressMessage("ReSharper.DPA", "DPA0005: Database issues")]
     public StatistiquesImportation TraiterFichier()
     {
-        var stats = new StatistiquesImportation();
+        StatistiquesImportation stats = new StatistiquesImportation();
 
-        var municipalitesImportees = depotImportation.ImporterMunicipalites();
-        var municipalitesActives = depotMunicipalites.ListerMunicipalitiesActives();
+        IEnumerable<Municipalite> municipalitesImportees = depotImportation.ImporterMunicipalites();
+        IEnumerable<Municipalite> municipalitesActives = depotMunicipalites.ListerMunicipalitiesActives();
         stats.NombreMunicipalitesImportees = municipalitesImportees.Count();
 
-        var codesExistantsActifs = new HashSet<int>(
+        HashSet<int> codesExistantsActifs = new HashSet<int>(
             depotMunicipalites.ListerMunicipalitiesActives()
                 .Select(m => m.Code)
         );
 
-        var codesImportees = new HashSet<int>(
+        HashSet<int> codesImportees = new HashSet<int>(
             municipalitesImportees
                 .Select(m => m.Code)
         );
 
-        foreach (var m in municipalitesImportees)
+        foreach (Municipalite m in municipalitesImportees)
             if (codesExistantsActifs.Contains(m.Code))
             {
                 stats.NombreMunicipalitesNonModifiees++;
@@ -50,7 +50,7 @@ public class ImportationFichier
                 stats.NombreMunicipalitesMisesAJour++;
             }
 
-        foreach (var m in municipalitesActives)
+        foreach (Municipalite m in municipalitesActives)
             if (!codesImportees.Contains(m.Code))
             {
                 depotMunicipalites.DesactiverMunicipalite(m.Code);

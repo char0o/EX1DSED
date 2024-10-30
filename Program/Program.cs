@@ -1,5 +1,6 @@
 ﻿using Data;
 using DependencyInjection;
+using Entite;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ImportationFichiers;
@@ -8,10 +9,10 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        var sp = DependencyInjectionConfig.Instance;
-        var importationFichier = sp.GetRequiredService<ImportationFichier>();
+        ServiceProvider sp = DependencyInjectionConfig.Instance;
+        ImportationFichier importationFichier = sp.GetRequiredService<ImportationFichier>();
 
-        var stats = importationFichier.TraiterFichier();
+        StatistiquesImportation stats = importationFichier.TraiterFichier();
         Console.WriteLine(stats.ToString());
     }
 }

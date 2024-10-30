@@ -14,7 +14,7 @@ public class MunicipaliteService
 
     public IEnumerable<MunicipaliteDTO> ListerMunicipalitesActives()
     {
-        var municipalites = depotMunicipalites.ListerMunicipalitiesActives();
+        IEnumerable<Municipalite> municipalites = depotMunicipalites.ListerMunicipalitiesActives();
 
         return municipalites.Select(c => new MunicipaliteDTO
         {

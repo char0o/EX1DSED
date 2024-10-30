@@ -20,23 +20,23 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        var chemin = config.GetSection("DepotSettings")["JSONPath"];
+        string? chemin = config.GetSection("DepotSettings")["JSONPath"];
         if (!File.Exists(chemin)) throw new FileNotFoundException("JSON file could not be found.");
-        var jsonString = File.ReadAllText(chemin);
+        string jsonString = File.ReadAllText(chemin);
 
-        using var jsonDoc = JsonDocument.Parse(jsonString);
-        var root = jsonDoc.RootElement;
-        var municipImportees = new HashSet<Municipalite>();
+        using JsonDocument jsonDoc = JsonDocument.Parse(jsonString);
+        JsonElement root = jsonDoc.RootElement;
+        HashSet<Municipalite> municipImportees = new HashSet<Municipalite>();
 
-        if (root.TryGetProperty("result", out var result))
-            if (result.TryGetProperty("records", out var municipalites))
-                foreach (var municipalite in municipalites.EnumerateArray())
+        if (root.TryGetProperty("result", out JsonElement result))
+            if (result.TryGetProperty("records", out JsonElement municipalites))
+                foreach (JsonElement municipalite in municipalites.EnumerateArray())
                 {
-                    var codeStr = municipalite.GetProperty(COLCODE).GetString();
-                    var nom = municipalite.GetProperty(COLNOM).GetString();
-                    var region = municipalite.GetProperty(COLREGION).GetString();
-                    var web = municipalite.GetProperty(COLWEB).GetString();
-                    var datelec = municipalite.GetProperty(COLDATELEC).GetString();
+                    string? codeStr = municipalite.GetProperty(COLCODE).GetString();
+                    string? nom = municipalite.GetProperty(COLNOM).GetString();
+                    string? region = municipalite.GetProperty(COLREGION).GetString();
+                    string? web = municipalite.GetProperty(COLWEB).GetString();
+                    string? datelec = municipalite.GetProperty(COLDATELEC).GetString();
 
                     if (string.IsNullOrWhiteSpace(codeStr) || string.IsNullOrWhiteSpace(nom) ||
                         string.IsNullOrWhiteSpace(region))

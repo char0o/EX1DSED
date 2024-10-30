@@ -19,17 +19,17 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        var municipalitiesImportees = new HashSet<Municipalite>();
-        var chemin = config.GetSection("DepotSettings")["CSVFilePath"];
+        HashSet<Municipalite> municipalitiesImportees = new HashSet<Municipalite>();
+        string? chemin = config.GetSection("DepotSettings")["CSVFilePath"];
 
-        var lignes = File.ReadAllLines(chemin)
+        string[] lignes = File.ReadAllLines(chemin)
             .Skip(1)
             .ToArray();
 
-        foreach (var ligne in lignes)
+        foreach (string ligne in lignes)
         {
-            var champs = ligne.Split("\",\"");
-            var code = int.Parse(champs[CODE].Substring(1));
+            string[] champs = ligne.Split("\",\"");
+            int code = int.Parse(champs[CODE].Substring(1));
 
             DateTime? dateElection = null;
             if (champs[DATEELECTION] != "") dateElection = DateTime.Parse(champs[DATEELECTION]);
@@ -37,7 +37,7 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
             string? siteWeb = null;
             if (champs[SITEWEB] != "") siteWeb = champs[SITEWEB];
 
-            var nouvelle = new Municipalite
+            Municipalite nouvelle = new Municipalite
             {
                 Code = code,
                 Nom = champs[NOM],

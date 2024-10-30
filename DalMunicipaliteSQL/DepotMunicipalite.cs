@@ -13,7 +13,7 @@ public class DepotMunicipalite : IDepotMunicipalites
 
     public Municipalite? ChercherMunicipaliteParCode(int code)
     {
-        var municipalite = appDbContext.Municipalite.SingleOrDefault(x => x.Code == code);
+        MunicipaliteDTO? municipalite = appDbContext.Municipalite.SingleOrDefault(x => x.Code == code);
         return municipalite == null ? null : municipalite.VersEntite();
     }
 
@@ -53,7 +53,7 @@ public class DepotMunicipalite : IDepotMunicipalites
 
     public void MajMunicipalite(Municipalite municipalite)
     {
-        var municipaliteDTO = appDbContext.Municipalite
+        MunicipaliteDTO? municipaliteDTO = appDbContext.Municipalite
             .SingleOrDefault(x => x.Code == municipalite.Code);
 
         if (municipaliteDTO is null) throw new ArgumentException("Aucun dto dans le bd avec ce code");
