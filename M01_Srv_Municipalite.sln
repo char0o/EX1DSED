@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepotImportationMunicipalit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entite", "Entite\Entite.csproj", "{98FE5E0D-5C50-4183-82DF-DB659A7AD5D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{06D72952-15CE-40E6-8020-6159B9AE9C91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{98FE5E0D-5C50-4183-82DF-DB659A7AD5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98FE5E0D-5C50-4183-82DF-DB659A7AD5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98FE5E0D-5C50-4183-82DF-DB659A7AD5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D72952-15CE-40E6-8020-6159B9AE9C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D72952-15CE-40E6-8020-6159B9AE9C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D72952-15CE-40E6-8020-6159B9AE9C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D72952-15CE-40E6-8020-6159B9AE9C91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

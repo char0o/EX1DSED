@@ -1,7 +1,6 @@
-﻿namespace Entite
+﻿namespace Entite;
+
+public interface IDepotImportationMunicipalites
 {
-    public interface IDepotImportationMunicipalites
-    {
-        IEnumerable<Municipalite> ImporterMunicipalites();
-    }
+    IEnumerable<Municipalite> ImporterMunicipalites();
 }

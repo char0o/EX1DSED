@@ -1,5 +1,5 @@
-﻿using Entite;
-using DalMunicipaliteSQL;
+﻿using DalMunicipaliteSQL;
+using Entite;
 
 namespace Services;
 
@@ -14,9 +14,9 @@ public class MunicipaliteService
 
     public IEnumerable<MunicipaliteDTO> ListerMunicipalitesActives()
     {
-        IEnumerable<Municipalite> municipalites = depotMunicipalites.ListerMunicipalitiesActives();
-        
-        return municipalites.Select( c => new MunicipaliteDTO()
+        var municipalites = depotMunicipalites.ListerMunicipalitiesActives();
+
+        return municipalites.Select(c => new MunicipaliteDTO
         {
             Code = c.Code,
             Nom = c.Nom,

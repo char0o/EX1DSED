@@ -1,61 +1,62 @@
-﻿using Entite;
+﻿using System.Diagnostics.CodeAnalysis;
+using Entite;
 
-namespace Data
+namespace Data;
+
+public class ImportationFichier
 {
-    public class ImportationFichier
+    private readonly IDepotImportationMunicipalites depotImportation;
+    private readonly IDepotMunicipalites depotMunicipalites;
+
+    public ImportationFichier(IDepotMunicipalites depotMunicipalites,
+        IDepotImportationMunicipalites depotImportation)
     {
-        private readonly IDepotMunicipalites depotMunicipalites;
-        private readonly IDepotImportationMunicipalites depotImportation;
+        this.depotMunicipalites = depotMunicipalites;
+        this.depotImportation = depotImportation;
+    }
 
-        public ImportationFichier(IDepotMunicipalites depotMunicipalites, 
-            IDepotImportationMunicipalites depotImportation)
-        {
-            this.depotMunicipalites = depotMunicipalites;
-            this.depotImportation = depotImportation;
-        }
+    [SuppressMessage("ReSharper.DPA", "DPA0005: Database issues")]
+    public StatistiquesImportation TraiterFichier()
+    {
+        var stats = new StatistiquesImportation();
 
-        public StatistiquesImportation TraiterDepotCSV()
-        {
-            StatistiquesImportation stats = new StatistiquesImportation();
-            IEnumerable<Municipalite> municipalitesImportees = depotImportation.ImporterMunicipalites();
-            HashSet<int> codesExistants = new HashSet<int>(
-                depotMunicipalites.ListerMunicipalities()
-                    .Select(m => m.Code)
-            );
+        var municipalitesImportees = depotImportation.ImporterMunicipalites();
+        var municipalitesActives = depotMunicipalites.ListerMunicipalitiesActives();
+        stats.NombreMunicipalitesImportees = municipalitesImportees.Count();
 
-            HashSet<int> codesImportees = new HashSet<int>(
-                municipalitesImportees
-                    .Select(m => m.Code)
-            );
+        var codesExistantsActifs = new HashSet<int>(
+            depotMunicipalites.ListerMunicipalitiesActives()
+                .Select(m => m.Code)
+        );
 
-            foreach (Municipalite m in municipalitesImportees.Where(m => !codesExistants.Contains(m.Code)))
+        var codesImportees = new HashSet<int>(
+            municipalitesImportees
+                .Select(m => m.Code)
+        );
+
+        foreach (var m in municipalitesImportees)
+            if (codesExistantsActifs.Contains(m.Code))
+            {
+                stats.NombreMunicipalitesNonModifiees++;
+            }
+            else if (depotMunicipalites.ChercherMunicipaliteParCode(m.Code) == null)
             {
                 depotMunicipalites.AjouterMunicipalite(m);
                 stats.NombreMunicipalitesAjoute++;
             }
-
-            foreach (Municipalite municipalite in depotMunicipalites
-                         .ListerMunicipalities()
-                         .Where(m => !codesImportees.Contains(m.Code)))
+            else
             {
-                depotMunicipalites.DesactiverMunicipalite(municipalite.Code);
+                depotMunicipalites.MajMunicipalite(m);
+                stats.NombreMunicipalitesMisesAJour++;
+            }
+
+        foreach (var m in municipalitesActives)
+            if (!codesImportees.Contains(m.Code))
+            {
+                depotMunicipalites.DesactiverMunicipalite(m.Code);
                 stats.NombreMunicipalitesDesactives++;
             }
 
-            /*foreach (Municipalite municipalite in depotMunicipalites.ListerMunicipalities()
-                         .Where(m => codesImportees.Contains(m.Code)))
-            {
-                if (municipalite.Actif == false)
-                {
-                    depotMunicipalites.ActiverMunicipalite(municipalite.Code);
-                    this.stats.NombreMunicipalitesMisesAJour++;
-                }
-                else
-                {
-                    this.stats.NombreMunicipalitesNonModifiees++;
-                }
-            }*/
-            return stats;
-        }
+        return stats;
     }
 }

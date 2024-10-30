@@ -1,17 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using Entite;
+﻿using Entite;
+using Microsoft.Extensions.Configuration;
 
 namespace DepotImportationMunicipalitesCSV;
 
 public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
 {
-    private IConfiguration config;
-    
-    const int CODE = 0;
-    const int NOM = 1;
-    const int REGION = 15;
-    const int SITEWEB = 9;
-    const int DATEELECTION = 23;
+    private const int CODE = 0;
+    private const int NOM = 1;
+    private const int REGION = 15;
+    private const int SITEWEB = 9;
+    private const int DATEELECTION = 23;
+    private readonly IConfiguration config;
 
     public DepotImportationMunicipalitesCsv(IConfiguration config)
     {
@@ -20,42 +19,36 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        HashSet<Municipalite> municipalitiesImportees = new HashSet<Municipalite>();
-        string chemin = config.GetSection("DepotSettings")["CSVFilePath"];
-        
-        string[] lignes = System.IO.File.ReadAllLines(chemin)
+        var municipalitiesImportees = new HashSet<Municipalite>();
+        var chemin = config.GetSection("DepotSettings")["CSVFilePath"];
+
+        var lignes = File.ReadAllLines(chemin)
             .Skip(1)
             .ToArray();
 
         foreach (var ligne in lignes)
         {
-            string[] champs = ligne.Split("\",\"");
-            int code = int.Parse(champs[CODE].Substring(1));
+            var champs = ligne.Split("\",\"");
+            var code = int.Parse(champs[CODE].Substring(1));
 
             DateTime? dateElection = null;
-            if (champs[DATEELECTION] != "")
-            {
-                dateElection = DateTime.Parse(champs[DATEELECTION]);
-            }
+            if (champs[DATEELECTION] != "") dateElection = DateTime.Parse(champs[DATEELECTION]);
 
             string? siteWeb = null;
-            if (champs[SITEWEB] != "")
-            {
-                siteWeb = champs[SITEWEB];
-            }
-            
-            Municipalite nouvelle = new Municipalite()
+            if (champs[SITEWEB] != "") siteWeb = champs[SITEWEB];
+
+            var nouvelle = new Municipalite
             {
                 Code = code,
                 Nom = champs[NOM],
                 SiteWeb = siteWeb,
                 DateElection = dateElection,
-                Region = champs[REGION],
+                Region = champs[REGION]
             };
 
             municipalitiesImportees.Add(nouvelle);
         }
-        
+
         return municipalitiesImportees;
     }
 }

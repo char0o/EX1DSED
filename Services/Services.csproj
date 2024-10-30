@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DalMunicipaliteSQL\DalMunicipaliteSQL.csproj" />
-      <ProjectReference Include="..\Entite\Entite.csproj" />
+        <ProjectReference Include="..\DalMunicipaliteSQL\DalMunicipaliteSQL.csproj"/>
+        <ProjectReference Include="..\Entite\Entite.csproj"/>
     </ItemGroup>
 
 </Project>
