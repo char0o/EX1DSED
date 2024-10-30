@@ -19,7 +19,7 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        HashSet<Municipalite> municipalitiesImportees = new();
+        HashSet<Municipalite> municipalitiesImportees = new HashSet<Municipalite>();
         string? chemin = this.config.GetSection("DepotSettings")["CSVFilePath"];
 
         string[] lignes = File.ReadAllLines(chemin)
@@ -43,7 +43,7 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
                 siteWeb = champs[SITEWEB];
             }
 
-            Municipalite nouvelle = new()
+            Municipalite nouvelle = new Municipalite()
             {
                 Code = code,
                 Nom = champs[NOM],

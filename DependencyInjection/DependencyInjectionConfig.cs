@@ -11,12 +11,11 @@ namespace DependencyInjection;
 
 public class DependencyInjectionConfig
 {
-    private static readonly Lazy<ServiceProvider> _serviceProvider = new(() =>
+    private static readonly Lazy<ServiceProvider> _serviceProvider = new Lazy<ServiceProvider>(() =>
     {
-        ServiceCollection services = new();
+        ServiceCollection services = new ServiceCollection();
 
-        IConfigurationBuilder builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+        IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false, true);
 
         IConfigurationRoot config = builder.Build();
@@ -59,7 +58,6 @@ public class DependencyInjectionConfig
                 }
             }
         });
-
 
         return services.BuildServiceProvider();
     });

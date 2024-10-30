@@ -18,20 +18,16 @@ public class ImportationFichier
     [SuppressMessage("ReSharper.DPA", "DPA0005: Database issues")]
     public StatistiquesImportation TraiterFichier()
     {
-        StatistiquesImportation stats = new();
+        StatistiquesImportation stats = new StatistiquesImportation();
 
         IEnumerable<Municipalite> municipalitesImportees = this.depotImportation.ImporterMunicipalites();
         IEnumerable<Municipalite> municipalitesActives = this.depotMunicipalites.ListerMunicipalitiesActives();
         stats.NombreMunicipalitesImportees = municipalitesImportees.Count();
 
-        HashSet<int> codesExistantsActifs = new(this.depotMunicipalites.ListerMunicipalitiesActives()
-            .Select(m => m.Code)
-        );
+        HashSet<int> codesExistantsActifs = new HashSet<int>(this.depotMunicipalites.ListerMunicipalitiesActives()
+            .Select(m => m.Code));
 
-        HashSet<int> codesImportees = new(
-            municipalitesImportees
-                .Select(m => m.Code)
-        );
+        HashSet<int> codesImportees = new HashSet<int>(municipalitesImportees.Select(m => m.Code));
 
         foreach (Municipalite m in municipalitesImportees)
         {

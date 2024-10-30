@@ -30,7 +30,7 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
 
         using JsonDocument jsonDoc = JsonDocument.Parse(jsonString);
         JsonElement root = jsonDoc.RootElement;
-        HashSet<Municipalite> municipImportees = new();
+        HashSet<Municipalite> municipImportees = new HashSet<Municipalite>();
 
         if (root.TryGetProperty("result", out JsonElement result))
         {
