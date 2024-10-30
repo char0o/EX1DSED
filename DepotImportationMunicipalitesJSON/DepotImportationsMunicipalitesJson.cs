@@ -53,14 +53,7 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
                     int code = Convert.ToInt32(codeStr);
                     DateTime? dateElection = Convert.ToDateTime(datelec);
 
-                    municipImportees.Add(new Municipalite
-                    {
-                        Code = code,
-                        Nom = nom,
-                        Region = region,
-                        SiteWeb = web,
-                        DateElection = dateElection
-                    });
+                    municipImportees.Add(new Municipalite(code, nom, region, web, dateElection));
                 }
             }
         }

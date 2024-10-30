@@ -43,15 +43,8 @@ public class DepotImportationMunicipalitesCsv : IDepotImportationMunicipalites
                 siteWeb = champs[SITEWEB];
             }
 
-            Municipalite nouvelle = new Municipalite()
-            {
-                Code = code,
-                Nom = champs[NOM],
-                SiteWeb = siteWeb,
-                DateElection = dateElection,
-                Region = champs[REGION]
-            };
-
+            Municipalite nouvelle = new Municipalite(code, champs[NOM], champs[REGION], siteWeb, dateElection);
+            
             municipalitiesImportees.Add(nouvelle);
         }
 

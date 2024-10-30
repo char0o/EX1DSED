@@ -15,13 +15,6 @@ public class MunicipaliteDTO
 
     public Municipalite VersEntite()
     {
-        return new Municipalite
-        {
-            Code = this.Code,
-            Nom = this.Nom,
-            Region = this.Region,
-            SiteWeb = this.SiteWeb,
-            DateElection = this.DateElection
-        };
+        return new Municipalite(this.Code, this.Nom, this.Region, this.SiteWeb, this.DateElection);
     }
 }

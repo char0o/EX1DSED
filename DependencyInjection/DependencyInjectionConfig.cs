@@ -24,7 +24,7 @@ public class DependencyInjectionConfig
 
         services.AddSingleton<IConfiguration>(config);
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-        services.AddScoped<DepotImportationMunicipalitesCsv>();
+        services.AddScoped(typeof(DepotImportationMunicipalitesCsv));
         services.AddScoped<DepotImportationsMunicipalitesJson>();
         services.AddScoped<IDepotMunicipalites, DepotMunicipalite>();
 
