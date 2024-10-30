@@ -10,10 +10,10 @@ public class StatistiquesImportation
 
     public override string ToString()
     {
-        return $"Nombre de municipalités importées : {NombreMunicipalitesImportees}\n" +
-               $"Nombre de municipalités mises à jour : {NombreMunicipalitesMisesAJour}\n" +
-               $"Nombre de municipalités non modifiées : {NombreMunicipalitesNonModifiees}\n" +
-               $"Nombre de municipalités désactivées : {NombreMunicipalitesDesactives}\n" +
-               $"Nombre de municipalités ajoutées : {NombreMunicipalitesAjoute}";
+        return $"Nombre de municipalités importées : {this.NombreMunicipalitesImportees}\n" +
+               $"Nombre de municipalités mises à jour : {this.NombreMunicipalitesMisesAJour}\n" +
+               $"Nombre de municipalités non modifiées : {this.NombreMunicipalitesNonModifiees}\n" +
+               $"Nombre de municipalités désactivées : {this.NombreMunicipalitesDesactives}\n" +
+               $"Nombre de municipalités ajoutées : {this.NombreMunicipalitesAjoute}";
     }
 }

@@ -13,32 +13,32 @@ public class DepotMunicipalite : IDepotMunicipalites
 
     public Municipalite? ChercherMunicipaliteParCode(int code)
     {
-        MunicipaliteDTO? municipalite = appDbContext.Municipalite.SingleOrDefault(x => x.Code == code);
+        MunicipaliteDTO? municipalite = this.appDbContext.Municipalite.SingleOrDefault(x => x.Code == code);
         return municipalite == null ? null : municipalite.VersEntite();
     }
 
     public IEnumerable<Municipalite> ListerMunicipalitiesActives()
     {
-        return appDbContext.Municipalite.Where(c => c.Actif == true)
+        return this.appDbContext.Municipalite.Where(c => c.Actif == true)
             .Select(c => c.VersEntite());
     }
 
     public void DesactiverMunicipalite(int code)
     {
-        var municipalite = appDbContext
+        MunicipaliteDTO? municipalite = this.appDbContext
             .Municipalite
             .SingleOrDefault(x => x.Code == code);
 
         if (municipalite != null)
         {
             municipalite.Actif = false;
-            appDbContext.SaveChanges();
+            this.appDbContext.SaveChanges();
         }
     }
 
     public void AjouterMunicipalite(Municipalite municipalite)
     {
-        appDbContext.Municipalite.Add(new MunicipaliteDTO
+        this.appDbContext.Municipalite.Add(new MunicipaliteDTO
         {
             Code = municipalite.Code,
             Nom = municipalite.Nom,
@@ -48,18 +48,21 @@ public class DepotMunicipalite : IDepotMunicipalites
             Actif = false
         });
 
-        appDbContext.SaveChanges();
+        this.appDbContext.SaveChanges();
     }
 
     public void MajMunicipalite(Municipalite municipalite)
     {
-        MunicipaliteDTO? municipaliteDTO = appDbContext.Municipalite
+        MunicipaliteDTO? municipaliteDTO = this.appDbContext.Municipalite
             .SingleOrDefault(x => x.Code == municipalite.Code);
 
-        if (municipaliteDTO is null) throw new ArgumentException("Aucun dto dans le bd avec ce code");
+        if (municipaliteDTO is null)
+        {
+            throw new ArgumentException("Aucun dto dans le bd avec ce code");
+        }
 
         municipaliteDTO.Actif = true;
 
-        appDbContext.SaveChanges();
+        this.appDbContext.SaveChanges();
     }
 }

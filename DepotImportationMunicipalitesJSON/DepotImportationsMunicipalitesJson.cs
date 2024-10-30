@@ -20,16 +20,22 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
 
     public IEnumerable<Municipalite> ImporterMunicipalites()
     {
-        string? chemin = config.GetSection("DepotSettings")["JSONPath"];
-        if (!File.Exists(chemin)) throw new FileNotFoundException("JSON file could not be found.");
+        string? chemin = this.config.GetSection("DepotSettings")["JSONPath"];
+        if (!File.Exists(chemin))
+        {
+            throw new FileNotFoundException("JSON file could not be found.");
+        }
+
         string jsonString = File.ReadAllText(chemin);
 
         using JsonDocument jsonDoc = JsonDocument.Parse(jsonString);
         JsonElement root = jsonDoc.RootElement;
-        HashSet<Municipalite> municipImportees = new HashSet<Municipalite>();
+        HashSet<Municipalite> municipImportees = new();
 
         if (root.TryGetProperty("result", out JsonElement result))
+        {
             if (result.TryGetProperty("records", out JsonElement municipalites))
+            {
                 foreach (JsonElement municipalite in municipalites.EnumerateArray())
                 {
                     string? codeStr = municipalite.GetProperty(COLCODE).GetString();
@@ -40,9 +46,11 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
 
                     if (string.IsNullOrWhiteSpace(codeStr) || string.IsNullOrWhiteSpace(nom) ||
                         string.IsNullOrWhiteSpace(region))
+                    {
                         throw new FormatException("Invalid JSON format.");
+                    }
 
-                    var code = Convert.ToInt32(codeStr);
+                    int code = Convert.ToInt32(codeStr);
                     DateTime? dateElection = Convert.ToDateTime(datelec);
 
                     municipImportees.Add(new Municipalite
@@ -54,6 +62,8 @@ public class DepotImportationsMunicipalitesJson : IDepotImportationMunicipalites
                         DateElection = dateElection
                     });
                 }
+            }
+        }
 
         return municipImportees;
     }

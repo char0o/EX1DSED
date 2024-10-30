@@ -14,7 +14,7 @@ public class MunicipaliteService
 
     public IEnumerable<MunicipaliteDTO> ListerMunicipalitesActives()
     {
-        IEnumerable<Municipalite> municipalites = depotMunicipalites.ListerMunicipalitiesActives();
+        IEnumerable<Municipalite> municipalites = this.depotMunicipalites.ListerMunicipalitiesActives();
 
         return municipalites.Select(c => new MunicipaliteDTO
         {
@@ -28,6 +28,6 @@ public class MunicipaliteService
 
     public void AjouterMunicipalite(MunicipaliteDTO municipalite)
     {
-        depotMunicipalites.AjouterMunicipalite(municipalite.VersEntite());
+        this.depotMunicipalites.AjouterMunicipalite(municipalite.VersEntite());
     }
 }

@@ -17,11 +17,11 @@ public class MunicipaliteDTO
     {
         return new Municipalite
         {
-            Code = Code,
-            Nom = Nom,
-            Region = Region,
-            SiteWeb = SiteWeb,
-            DateElection = DateElection
+            Code = this.Code,
+            Nom = this.Nom,
+            Region = this.Region,
+            SiteWeb = this.SiteWeb,
+            DateElection = this.DateElection
         };
     }
 }

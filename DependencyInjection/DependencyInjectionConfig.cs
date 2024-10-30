@@ -13,7 +13,7 @@ public class DependencyInjectionConfig
 {
     private static readonly Lazy<ServiceProvider> _serviceProvider = new(() =>
     {
-        ServiceCollection services = new ServiceCollection();
+        ServiceCollection services = new();
 
         IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -32,7 +32,10 @@ public class DependencyInjectionConfig
         services.AddScoped<ImportationFichier>(provider =>
         {
             string? fileType = config.GetSection("ImportFileType").Value;
-            if (fileType == null) throw new ArgumentNullException("FileType not found in JSON file");
+            if (fileType == null)
+            {
+                throw new ArgumentNullException("FileType not found in JSON file");
+            }
 
             IDepotMunicipalites depotMunicipalites = provider.GetRequiredService<IDepotMunicipalites>();
 
